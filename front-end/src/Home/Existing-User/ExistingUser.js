@@ -19,12 +19,15 @@ const ExistingUser = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        const user = users.find(u=>u.accNo === Number(accountNumber))
-        if (user){
-            document.getElementsByClassName('formbtn')[0].style.display = 'none';
-            document.getElementsByClassName('accbtn')[0].style.display = 'block';
-        }
-        else{alert("No user found");}
+
+        
+
+        // const user = users.find(u=>u.accNo === Number(accountNumber))
+        // if (user){
+        //     document.getElementsByClassName('formbtn')[0].style.display = 'none';
+        //     document.getElementsByClassName('accbtn')[0].style.display = 'block';
+        // }
+        // else{alert("No user found");}
         
     } 
     return (
