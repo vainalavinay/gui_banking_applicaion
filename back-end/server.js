@@ -44,6 +44,32 @@ app.post("/api/submit-form", (req, res) => {
       res.status
     }});
 
+    app.put('/user-interface/:userId/changepin',(req,res)=>{
+        const pin = req.body.pin;
+        const userId = req.params.userId
+        user.updateOne({_id:userId},{pin:pin},(err, result)=>{
+            if (err) {console.log(err);}
+            else{
+                console.log("Successfully updated the pin ");
+                res.status(200).send()
+            }
+        })
+    })
+
+    app.put('/user-interface/:userId/deposit',(req,res)=>{
+        const userId = req.params.userId
+        const depositAmount = Number(req.body.deposit)
+        user.updateOne({_id:userId},{$inc : {balance: depositAmount}},(err,result)=>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                console.log("Amount Deposited.!");
+                res.status(200).send()
+            }
+        })
+    })
+
   const port = 4000;
   
   app.listen(port, () => {
