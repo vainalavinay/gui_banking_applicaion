@@ -1,27 +1,58 @@
-import {React, useState} from 'react'
+import {React, useState, useEffect} from 'react'
 import { useParams } from 'react-router';
 import {Form, Button} from'react-bootstrap';
-import users from '../users';
+import {useDispatch, useSelector} from 'react-redux'
+import {getData} from './Redux/action'
+import axios from 'axios';
 
 const Withdraw = () => {
-    const { id } = useParams();
-    const accountHolder = users.find(user => user.accNo === Number(id));
     const [withdraw, setWithdraw] = useState(0);
+    const { id } = useParams();
+    const [userData, setUserData] = useState([])
+    
+    const dispatch = useDispatch()
+    const data = useSelector((state)=>state.data.data)
+    
+    const user = data.find(u=>u._id === id)
+
+    useEffect(()=>{
+        try {
+            if(user){
+                setUserData(user)
+                localStorage.setItem('user', JSON.stringify(user))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+    },[])
+
+    useEffect(() => {
+      try {
+        const storedData = localStorage.getItem('user')
+        if(storedData){
+            setUserData(JSON.parse(storedData))
+
+        }
+      } catch (error) {
+        // console.log(error);
+      }
+    }, [])
+    
+
+    useEffect(()=>{
+        dispatch(getData())
+    },[dispatch])
 
     const submitHandler = (e) => {
         e.preventDefault();
-        if (withdraw>0){
-            if(accountHolder.balance>withdraw){
-                accountHolder.balance -= Number(withdraw);
-                console.log(accountHolder.balance);
-            }
-            else{
-                alert('Insufficient Balance');
-            }
-        }
-        else{
-            alert('Enter a valid amount');
-        }
+        axios.put(`http://localhost:4000/user-interface/${user._id}/withdraw`,{withdraw: withdraw}, {
+            Headers: {'Accept': 'application/json'}
+        })
+        .then((response)=>console.log(response))
+        .catch((error)=>console.log(error))
+        alert("Amount Deposited.!")
+
     }
 
     return (

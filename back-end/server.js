@@ -70,6 +70,19 @@ app.post("/api/submit-form", (req, res) => {
         })
     })
 
+    app.put('/user-interface/:userId/withdraw',(req,res)=>{
+        const userId = req.params.userId
+        const withdrawAmount = Number(req.body.withdraw)
+        user.updateOne({_id:userId},{$inc : {balance: -withdrawAmount}},(err,result)=>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                console.log("Amount Withdrawn.!");
+                res.status(200).send()
+            }
+        })
+    })
   const port = 4000;
   
   app.listen(port, () => {

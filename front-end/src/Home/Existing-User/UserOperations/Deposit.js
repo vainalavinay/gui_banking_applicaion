@@ -20,9 +20,7 @@ const Deposit = () => {
         try {
             if(user){
                 setUserData(user)
-                localStorage.setItem('user', JSON.stringify(user))
-                console.log(userData);
-                
+                localStorage.setItem('user', JSON.stringify(user))                
             }
         } catch (error) {
             console.log(error);
@@ -34,7 +32,6 @@ const Deposit = () => {
             const storedData = localStorage.getItem('user')
             if (storedData){
                 setUserData(JSON.parse(storedData))
-                console.log(userData);
 
             }
         } catch (error) {
